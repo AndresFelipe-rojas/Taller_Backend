@@ -1,6 +1,6 @@
 package culturoteca.service.impl;
 
-import culturoteca.exception.CultureMediaException.VideoNotFoundException;
+import culturoteca.exception.VideoNotFoundException;
 import culturoteca.model.Video;
 import culturoteca.repository.impl.ImpVideoRepository;
 import culturoteca.service.impl.VideoServiceImpl;
