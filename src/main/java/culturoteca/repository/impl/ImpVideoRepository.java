@@ -25,7 +25,7 @@ public class ImpVideoRepository implements VideoRepository {
     }
 
     @Override
-    public List<Video> find(String title) {
+    public List<Video> findTitle(String title) {
         List<Video> filteredVideos = null;
         for ( Video video : videos ) {
             if(title.equals( video.title() )){
@@ -39,7 +39,7 @@ public class ImpVideoRepository implements VideoRepository {
     }
 
     @Override
-    public List<Video> find(Double fromDuration, Double toDuration) {
+    public List<Video> findVideosByDuration(Double fromDuration, Double toDuration) {
         List<Video> filteredVideos = new ArrayList<Video>();
         for ( Video video : videos ) {
             if(video.duration()> fromDuration && video.duration()< toDuration){
