@@ -1,32 +1,51 @@
 package culturoteca.repository.impl;
+import java.util.ArrayList;
+import java.util.List;
 
 import culturoteca.model.Video;
 import culturoteca.repository.VideoRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public class ImpVideoRepository implements VideoRepository {
-    private final List<Video> videos = new ArrayList<>();
 
-    @Override
-    public List<Video> findAll() {
-        return List.of();
+    private final List<Video> videos;
+
+    public ImpVideoRepository() {
+        videos = new ArrayList<>();
     }
 
     @Override
-    public Video save(Video save) {
-        return null;
+    public List<Video> findAll() {
+        return videos;
+    }
+
+    @Override
+    public Video save(Video video) {
+        this.videos.add( video );
+        return video;
     }
 
     @Override
     public List<Video> find(String title) {
-        return List.of();
+        List<Video> filteredVideos = null;
+        for ( Video video : videos ) {
+            if(title.equals( video.title() )){
+                if(filteredVideos == null){
+                    filteredVideos = new ArrayList<Video>();
+                }
+                filteredVideos.add(video);
+            }
+        }
+        return filteredVideos;
     }
 
     @Override
     public List<Video> find(Double fromDuration, Double toDuration) {
-        return List.of();
+        List<Video> filteredVideos = new ArrayList<Video>();
+        for ( Video video : videos ) {
+            if(video.duration()> fromDuration && video.duration()< toDuration){
+                filteredVideos.add(video);
+            }
+        }
+        return filteredVideos;
     }
 }
