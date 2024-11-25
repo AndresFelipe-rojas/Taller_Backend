@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface VideoService {
     // Método para obtener todos los videos
-    List<Video> getAllVideos();
+    List<Video> getAllVideos() throws VideoNotFoundException;
 
     // Método para buscar videos por título
     Video findVideoByTitle(String title) throws VideoNotFoundException;
