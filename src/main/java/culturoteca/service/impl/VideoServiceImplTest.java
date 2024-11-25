@@ -23,6 +23,34 @@ class VideoServiceImplTest {
     }
 
     @Test
+    void when_FindAll_all_videos_should_be_returned_successfully() throws VideoNotFoundException {
+        // Arrange
+        Video video1 = new Video("001", "Cultura Ciudadana", "Un video sobre cultura", 10.0);
+        Video video2 = new Video("002", "Historia de la Ciudad", "Un recorrido histórico", 15.5);
+        videoRepository.save(video1);
+        videoRepository.save(video2);
+
+        // Act
+        List<Video> videos = videoService.getAllVideos();
+
+        // Assert
+        assertNotNull(videos, "La lista de videos no debería ser nula.");
+        assertEquals(2, videos.size(), "La cantidad de videos retornada no es correcta.");
+        assertTrue(videos.contains(video1), "El video1 no se encuentra en la lista.");
+        assertTrue(videos.contains(video2), "El video2 no se encuentra en la lista.");
+    }
+
+    @Test
+    void when_FindAll_does_not_find_any_video_an_VideoNotFoundException_should_be_thrown_successfully() {
+        // Arrange
+        videoRepository.findAll().clear(); // Asegurar que el repositorio esté vacío.
+
+        // Act & Assert
+        Exception exception = assertThrows(VideoNotFoundException.class, () -> videoService.getAllVideos());
+        assertEquals("Video no encontrado.", exception.getMessage(), "El mensaje de excepción no es el esperado.");
+    }
+
+    @Test
     void getAllVideos_shouldReturnAllVideos() throws VideoNotFoundException {
         // Arrange
         Video video1 = new Video("001", "Cultura Ciudadana", "Un video sobre cultura", 10.0);
@@ -57,7 +85,7 @@ class VideoServiceImplTest {
         videoRepository.save(video);
 
         // Act
-        Video foundVideo = videoService.findVideoByTitle("Arte Moderno");
+        Video foundVideo = videoService.findByTitle("Arte Moderno");
 
         // Assert
         assertNotNull(foundVideo);
@@ -70,7 +98,7 @@ class VideoServiceImplTest {
         videoRepository.findAll().clear();
 
         // Act & Assert
-        Exception exception = assertThrows(VideoNotFoundException.class, () -> videoService.findVideoByTitle("Inexistente"));
+        Exception exception = assertThrows(VideoNotFoundException.class, () -> videoService.findByTitle("Inexistente"));
         assertEquals("Video no encontrado: Inexistente", exception.getMessage());
     }
 }
