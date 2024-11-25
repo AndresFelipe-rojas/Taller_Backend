@@ -5,9 +5,11 @@ import culturoteca.exception.DuracionNotValidException;
 import culturoteca.model.Video;
 import culturoteca.repository.VideoRepository;
 import culturoteca.service.VideoService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class VideoServiceImpl implements VideoService {
 
     private final VideoRepository videoRepository;
@@ -27,7 +29,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Video findByTitle(String title) throws VideoNotFoundException {
-        List<Video> videos = videoRepository.findTitle(title);
+        List<Video> videos = videoRepository.findByTitle(title);
         if (videos.isEmpty()) {
             throw new VideoNotFoundException(title);
         }
@@ -36,7 +38,7 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<Video> findByDuration(Double fromDuration, Double toDuration) throws DuracionNotValidException {
-        List<Video> videos = videoRepository.findVideosByDuration(fromDuration, toDuration);
+        List<Video> videos = videoRepository.findByDurationBetween(fromDuration, toDuration);
         if (videos.isEmpty()) {
             throw new DuracionNotValidException("N/A", 0.0);  // Puedes cambiar los valores según tu lógica
         }
