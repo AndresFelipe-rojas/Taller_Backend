@@ -6,13 +6,10 @@ import culturoteca.repository.VideoRepository;
 import culturoteca.service.VideoService;
 
 import java.util.List;
-import java.util.Optional;
 
 public class VideoServiceImpl implements VideoService {
-
     private final VideoRepository videoRepository;
 
-    // Constructor para inyectar el repositorio
     public VideoServiceImpl(VideoRepository videoRepository) {
         this.videoRepository = videoRepository;
     }
@@ -21,28 +18,31 @@ public class VideoServiceImpl implements VideoService {
     public List<Video> getAllVideos() throws VideoNotFoundException {
         List<Video> videos = videoRepository.findAll();
         if (videos.isEmpty()) {
-            throw new VideoNotFoundException();
+            throw new VideoNotFoundException("No se encontraron videos en el catálogo.");
         }
         return videos;
     }
 
     @Override
-    public Video findVideoByTitle(String title) throws VideoNotFoundException {
-        List<Video> videos = videoRepository.findTitle(title);
-        if (videos.isEmpty()) {
-            throw new VideoNotFoundException(title);
-        }
-        // Devuelve el primer video encontrado
-        return videos.get(0);
-    }
-
-    @Override
-    public List<Video> findVideosByDuration(Double fromDuration, Double toDuration) {
-        return videoRepository.findVideosByDuration(fromDuration, toDuration);
-    }
-
-    @Override
     public Video addVideo(Video video) {
         return videoRepository.save(video);
+    }
+
+    @Override
+    public Video findByTitle(String title) throws VideoNotFoundException {
+        List<Video> videos = videoRepository.findTitle(title);
+        if (videos.isEmpty()) {
+            throw new VideoNotFoundException("No se encontró un video con el título: " + title);
+        }
+        return videos.get(0); // Retornar el primero si hay varios con el mismo título.
+    }
+
+    @Override
+    public List<Video> findByDuration(Double fromDuration, Double toDuration) throws VideoNotFoundException {
+        List<Video> videos = videoRepository.findVideosByDuration(fromDuration, toDuration);
+        if (videos.isEmpty()) {
+            throw new VideoNotFoundException("No se encontraron videos en el rango de duración especificado.");
+        }
+        return videos;
     }
 }

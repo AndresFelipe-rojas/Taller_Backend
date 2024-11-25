@@ -6,15 +6,11 @@ import culturoteca.model.Video;
 import java.util.List;
 
 public interface VideoService {
-    // Método para obtener todos los videos
     List<Video> getAllVideos() throws VideoNotFoundException;
 
-    // Método para buscar videos por título
-    Video findVideoByTitle(String title) throws VideoNotFoundException;
-
-    // Método para buscar videos por rango de duración
-    List<Video> findVideosByDuration(Double fromDuration, Double toDuration);
-
-    // Método para agregar un nuevo video
     Video addVideo(Video video);
+
+    Video findByTitle(String title) throws VideoNotFoundException;
+
+    List<Video> findByDuration(Double fromDuration, Double toDuration) throws VideoNotFoundException;
 }
