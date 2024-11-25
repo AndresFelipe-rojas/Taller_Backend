@@ -1,13 +1,13 @@
 package culturoteca.repository;
-import java.util.List;
+
 import culturoteca.model.Video;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface VideoRepository {
-    List<Video> findAll();
+import java.util.List;
 
-    Video save(Video save);
-
-    List<Video> findTitle(String title);
-
-    List<Video> findVideosByDuration(Double fromDuration, Double toDuration);
+@Repository
+public interface VideoRepository extends JpaRepository<Video, Long> {
+    List<Video> findByTitle(String title);
+    List<Video> findByDurationBetween(Double fromDuration, Double toDuration);
 }
